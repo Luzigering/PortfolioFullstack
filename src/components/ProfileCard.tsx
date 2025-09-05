@@ -1,13 +1,15 @@
 import React from "react";
 import Icon from "./Icon";
 import AnimatedText from "./AnimatedText";
+import { motion } from "framer-motion";
 
 interface ProfileCardProps {
   name: string;
   imageUrl: string;
+  onShowProjectsClick: () => void;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ name, imageUrl }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ name, imageUrl, onShowProjectsClick }) => {
   return (
     <div
       className="
@@ -27,7 +29,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ name, imageUrl }) => {
         {name}
       </h1>
       <div className="text-center">
-        <p className="text-gray-400 text-lg mb-4">Desenvolvedora Front-End</p>
+        <p className="text-gray-400 text-lg mb-4">Desenvolvedora FullStack</p>
         <div className="w-20 h-0.5 bg-indigo-500 mx-auto mb-4" />
         <AnimatedText text="Apaixonada por criar experiências digitais fluidas e bonitas com as tecnologias mais modernas." className="text-slate-400 max-w-xs text-base " />
       </div>
@@ -61,6 +63,32 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ name, imageUrl }) => {
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
         </Icon>
       </div>
+
+<div className="lg:hidden mt-8">
+  <motion.button
+    onClick={onShowProjectsClick}
+    className="relative px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 text-white text-lg font-bold overflow-hidden shadow-lg"
+    whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(168, 85, 247, 0.7)" }}
+    whileTap={{ scale: 0.95 }}
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+  >
+    <span className="relative z-10 flex items-center gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      Ver Projetos
+    </span>
+    <motion.span
+      className="absolute inset-0 bg-white opacity-20"
+      initial={{ width: "0%" }}
+      whileHover={{ width: "100%" }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      style={{ left: 0 }}
+    ></motion.span>
+  </motion.button>
+</div>
     </div>
   );
 };
