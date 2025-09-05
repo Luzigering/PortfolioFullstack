@@ -1,13 +1,14 @@
 import React from 'react';
-import type { Project } from '../data/project';
+import type { GitHubProject } from '../services/github';
 import AnimatedText from './AnimatedText';
+
 interface ProjectCardProps {
-  project: Project;
+  project: GitHubProject;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project,  }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
-       <a
+    <a
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
@@ -15,18 +16,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project,  }) => {
     >
       <div className="flex flex-col h-full">
         <div className="w-full aspect-video mb-5 overflow-hidden rounded-lg">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover rounded-lg border border-slate-700 transition-transform duration-300 group-hover:scale-105"
-          />
+          {project.mediaType === 'video' ? (
+            <video
+              src={project.mediaUrl}
+              autoPlay
+              loop
+              muted
+              className="w-full h-full object-cover rounded-lg border border-slate-700 transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <img
+              src={project.mediaUrl}
+              alt={project.title}
+              className="w-full h-full object-cover rounded-lg border border-slate-700 transition-transform duration-300 group-hover:scale-105"
+            />
+          )}
         </div>
         <div className="flex flex-col justify-start flex-grow">
           <h3 className="text-2xl font-bold text-slate-100 mb-2">{project.title}</h3>
-          <AnimatedText text={project.description}  className="text-slate-400 mb-4 text-base" />
+          <AnimatedText text={project.description} className="text-slate-400 mb-4 text-base" />
         </div>
         <div className="mt-auto flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
                 {project.tags.map(tag => (
                     <span key={tag} className="bg-purple-900/50 text-purple-300 text-xs font-medium px-2.5 py-1 rounded-full">{tag}</span>
                 ))}
@@ -38,5 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project,  }) => {
         </div>
       </div>
     </a>
-  );}
+  );
+};
+
 export default ProjectCard;
