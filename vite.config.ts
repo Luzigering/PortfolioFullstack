@@ -8,7 +8,7 @@ export default defineConfig(({ command }) => {
 
   return {
   
-    base: isDeployingToGitHubPages ? '/portfoliofullstack/' : '/',
+    base: isDeployingToGitHubPages ? '/PortfolioFullstack/' : '/',
     plugins: [
       react(), tailwindcss()
     ],
