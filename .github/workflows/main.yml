@@ -1,49 +1,54 @@
-name: Deploy Portfolio to GitHub Pages
+name: Deploy do Portfólio no GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-jobs:
-  deploy:
-    concurrency:
-      group: "pages"
-      cancel-in-progress: true
-    
-    runs-on: ubuntu-latest
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
-      - name: Install dependencies
+      - name: Instalar dependências
         run: npm install
 
-      - name: Build
+      - name: Build do projeto
         run: npm run build
         env:
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+      - name: Upload do artefato
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
 
-      - name: Deploy to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
