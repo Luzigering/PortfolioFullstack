@@ -33,6 +33,7 @@ jobs:
       - name: Build do projeto
         run: npm run build
         env:
+          VITE_DEPLOY_TARGET: 'gh-pages'
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
 
       - name: Configurar GitHub Pages
