@@ -2,15 +2,18 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
-export default defineConfig({
+export default defineConfig(({ command }) => {
 
-  base: process.env.GITHUB_ACTIONS === 'true'
-    ? '/portfoliofullstack/'
-    : '/',
-  plugins: [
-    react(),tailwindcss()
-  ],
-  build: {
-    outDir: 'dist',
-  },
+  const isDeployingToGitHubPages = process.env.VITE_DEPLOY_TARGET === 'gh-pages';
+
+  return {
+  
+    base: isDeployingToGitHubPages ? '/portfoliofullstack/' : '/',
+    plugins: [
+      react(), tailwindcss()
+    ],
+    build: {
+      outDir: 'dist',
+    },
+  };
 });
